@@ -1,13 +1,21 @@
-FROM node:18                          # Use Node.js 18 official image
+# Use Node.js 18 official image
+FROM node:18-alpine
 
-WORKDIR /app                         # Set working directory inside container
+# Set working directory inside container
+WORKDIR /app
 
-COPY package*.json ./               # Copy package.json & lock file
+# Copy package.json & package-lock.json
+COPY package*.json ./
 
-RUN npm install                     # Install dependencies
+# Install dependencies
+RUN npm install
 
-COPY . .                           # Copy rest of project files
+# Copy rest of the application files
+COPY . .
 
-EXPOSE 8000                        # Expose port 8000 to outside
+# Expose port 8000
+EXPOSE 8000
 
-CMD ["npm", "start"]                # Run the app
+# Run the app
+CMD ["npm", "start"]
+

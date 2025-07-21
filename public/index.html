@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Node Calculator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Simple Calculator</h2>
+
+    <!-- Calculator Form -->
+    <form id="calcForm">
+      <input type="number" name="num1" placeholder="Enter number 1" required>
+      <input type="number" name="num2" placeholder="Enter number 2" required>
+      <select name="operation">
+        <option value="add">+</option>
+        <option value="sub">-</option>
+        <option value="mul">*</option>
+        <option value="div">/</option>
+      </select>
+      <button type="submit">Calculate</button>
+    </form>
+
+    <!-- Result will be shown here -->
+    <div id="result"></div>
+  </div>
+
+  <script src="script.js"></script> <!-- Link to frontend JS -->
+</body>
+</html>

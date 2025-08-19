@@ -4,17 +4,18 @@ FROM node:18-alpine
 # Set working directory inside container
 WORKDIR /app
 
-# Copy package.json & package-lock.json from backend
+# Copy backend package files and install dependencies
 COPY backend/package*.json ./
-
-# Install dependencies
 RUN npm install
 
-# Copy the backend source code
-COPY backend/ ./
+# Copy backend source code
+COPY backend/ ./backend/
 
-# Expose port 8000 (adjust if your app uses a different port)
+# Copy frontend files
+COPY frontend/ ./frontend/
+
+# Expose port
 EXPOSE 8000
 
-# Run the app
-CMD ["node", "main.js"]
+# Start backend server
+CMD ["node", "backend/main.js"]

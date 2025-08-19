@@ -1,30 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Node Calculator - SR</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Standard Calculator</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h2>Simple Calculator</h2>
-
-    <!-- Calculator Form -->
-    <form id="calcForm">
-      <input type="number" name="num1" placeholder="Enter number 1" required>
-      <input type="number" name="num2" placeholder="Enter number 2" required>
-      <select name="operation">
-        <option value="add">+</option>
-        <option value="sub">-</option>
-        <option value="mul">*</option>
-        <option value="div">/</option>
-      </select>
-      <button type="submit">Calculate</button>
-    </form>
-
-    <!-- Result will be shown here -->
-    <div id="result"></div>
+<div class="calculator">
+  <div class="display">
+    <div id="expression" class="expression"></div>
+    <div id="result" class="result">0</div>
   </div>
 
-  <script src="script.js"></script> <!-- Link to frontend JS -->
+  <div class="buttons">
+    <!-- Row 1 -->
+    <button class="btn clear">C</button>
+    <button class="btn sign">+/-</button>
+    <button class="btn operator" data-op="%">%</button>
+    <button class="btn operator" data-op="sqrt">√</button>
+
+    <!-- Row 2 -->
+    <button class="btn number">7</button>
+    <button class="btn number">8</button>
+    <button class="btn number">9</button>
+    <button class="btn operator" data-op="/">/</button>
+
+    <!-- Row 3 -->
+    <button class="btn number">4</button>
+    <button class="btn number">5</button>
+    <button class="btn number">6</button>
+    <button class="btn operator" data-op="*">*</button>
+
+    <!-- Row 4 -->
+    <button class="btn number">1</button>
+    <button class="btn number">2</button>
+    <button class="btn number">3</button>
+    <button class="btn operator" data-op="-">-</button>
+
+    <!-- Row 5 -->
+    <button class="btn number">0</button>
+    <button class="btn number">.</button>
+    <button class="btn equal">=</button>
+    <button class="btn operator" data-op="+">+</button>
+  </div>
+</div>
+<script src="script.js"></script>
 </body>
 </html>

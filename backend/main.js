@@ -7,8 +7,8 @@ const PORT = 8000;
 
 app.use(bodyParser.json());
 
-// serve frontend files
-app.use(express.static(path.join(__dirname, "frontend")));
+// Serve frontend
+app.use(express.static(path.join(__dirname, "../frontend")));
 
 // API route
 app.post("/calculate", (req, res) => {

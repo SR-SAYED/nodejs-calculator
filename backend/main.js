@@ -5,9 +5,16 @@ const bodyParser = require("body-parser");
 const app = express();
 const PORT = 8000;
 
+// Parse JSON
 app.use(bodyParser.json());
 
-// Serve frontend
+// Log every request
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} Body:`, req.body);
+  next();
+});
+
+// Serve frontend files
 app.use(express.static(path.join(__dirname, "../frontend")));
 
 // API route
@@ -20,13 +27,16 @@ app.post("/calculate", (req, res) => {
     case "sub": result = num1 - num2; break;
     case "mul": result = num1 * num2; break;
     case "div": result = num2 !== 0 ? num1 / num2 : "Error: Division by zero"; break;
-    default: result = "Invalid operation";
+    default:
+      console.log("Invalid operation received:", operation);
+      result = "Invalid operation";
   }
 
   console.log(`Calculation: ${num1} ${operation} ${num2} = ${result}`);
   res.json({ result });
 });
 
-app.listen(PORT, () => {
-  console.log(`✅ Server running at http://localhost:${PORT}`);
+// Listen on all interfaces so production server can access
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`✅ Backend running at http://0.0.0.0:${PORT}`);
 });

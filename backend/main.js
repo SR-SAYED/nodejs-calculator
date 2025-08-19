@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const app = express();
 const PORT = 8000;
 
-// Enable CORS
+// Enable CORS for development (optional in production behind Nginx)
 app.use(cors());
 
 // Parse JSON
@@ -40,7 +40,7 @@ app.post("/calculate", (req, res) => {
   res.json({ result });
 });
 
-// Listen externally
+// Listen on all interfaces
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`✅ Backend running at http://0.0.0.0:${PORT}`);
 });

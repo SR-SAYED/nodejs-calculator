@@ -8,6 +8,10 @@ const resultEl = document.getElementById("result");
 // Map operator symbols to backend strings
 const symbolToBackend = { "+": "add", "-": "sub", "*": "mul", "/": "div" };
 
+// History log
+let history = [];
+
+// Update display
 function updateDisplay() {
   expressionEl.textContent = `${firstNum} ${operator || ""} ${secondNum}`;
   resultEl.textContent = current || "0";
@@ -16,6 +20,7 @@ function updateDisplay() {
 // Number & decimal buttons
 document.querySelectorAll(".number").forEach(btn => {
   btn.addEventListener("click", () => {
+    console.log("Number clicked:", btn.textContent);
     if (btn.textContent === "." && current.includes(".")) return;
     current += btn.textContent;
     if (!operator) firstNum = current;
@@ -26,6 +31,7 @@ document.querySelectorAll(".number").forEach(btn => {
 
 // Clear button
 document.querySelector(".clear").addEventListener("click", () => {
+  console.log("Clear clicked");
   firstNum = "";
   secondNum = "";
   operator = "";
@@ -35,6 +41,7 @@ document.querySelector(".clear").addEventListener("click", () => {
 
 // Sign toggle (+/-)
 document.querySelector(".sign").addEventListener("click", () => {
+  console.log("Sign clicked");
   if (!current) return;
   current = current.startsWith("-") ? current.slice(1) : "-" + current;
   if (!operator) firstNum = current;
@@ -46,6 +53,7 @@ document.querySelector(".sign").addEventListener("click", () => {
 document.querySelectorAll(".operator").forEach(btn => {
   btn.addEventListener("click", async () => {
     const op = btn.dataset.op;
+    console.log("Operator clicked:", op);
 
     // Percentage
     if (op === "%") {
@@ -67,7 +75,7 @@ document.querySelectorAll(".operator").forEach(btn => {
 
     if (!current) return;
 
-    // Chain calculations if previous operator exists
+    // Chain calculations
     if (operator && secondNum) await calculate();
 
     operator = op;
@@ -78,6 +86,7 @@ document.querySelectorAll(".operator").forEach(btn => {
 
 // Equal button
 document.querySelector(".equal").addEventListener("click", async () => {
+  console.log("Equal clicked");
   if (!firstNum || !operator || !secondNum) return;
   await calculate();
 });
@@ -95,20 +104,32 @@ async function calculate() {
   }
 
   try {
-    const res = await fetch("/calculate", {
+    // Use current host for production
+    const BASE_URL = window.location.origin;
+
+    const res = await fetch(`${BASE_URL}/calculate`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ num1, num2, operation: backendOp })
     });
+
     const data = await res.json();
     current = data.result.toString();
+
+    // Log calculation in frontend
+    const calcLog = `${num1} ${operator} ${num2} = ${current}`;
+    console.log("Calculation performed:", calcLog);
+    history.push(calcLog);
+
+    // Reset for next operation
     firstNum = current;
     secondNum = "";
     operator = "";
     updateDisplay();
+
   } catch (err) {
     current = "Error";
     updateDisplay();
-    console.error(err);
+    console.error("Error performing calculation:", err);
   }
 }

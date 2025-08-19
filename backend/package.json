@@ -1,7 +1,7 @@
 {
   "name": "nodejs-calculator",
   "version": "1.0.0",
-  "description": "Interactive calculator with frontend JavaScript",
+  "description": "Interactive NodeJS calculator",
   "main": "main.js",
   "scripts": {
     "start": "node main.js"
@@ -9,6 +9,7 @@
   "author": "MD Sayedur Rahman",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "body-parser": "^1.20.2"
   }
 }

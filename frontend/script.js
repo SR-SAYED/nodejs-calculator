@@ -105,7 +105,7 @@ async function calculate() {
 
   try {
     // Use current host for production
-    const BASE_URL = window.location.origin;
+    const BASE_URL = "http://13.201.75.167:8000";
 
     const res = await fetch(`${BASE_URL}/calculate`, {
       method: "POST",

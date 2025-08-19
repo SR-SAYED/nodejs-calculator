@@ -12,7 +12,7 @@ const symbolToBackend = { "+": "add", "-": "sub", "*": "mul", "/": "div" };
 let history = [];
 
 // BASE_URL points to Nginx proxy path
-const BASE_URL = "/calculator";
+const BASE_URL = "/calculator/";
 
 // Update display
 function updateDisplay() {

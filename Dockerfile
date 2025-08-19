@@ -1,23 +1,20 @@
-# Use Node.js 18 official Alpine image
+# Use Node.js 18 official image
 FROM node:18-alpine
 
 # Set working directory inside container
 WORKDIR /app
 
-# Install build tools for npm dependencies
-RUN apk add --no-cache python3 make g++
-
-# Copy package.json & package-lock.json
-COPY package*.json ./
+# Copy package.json & package-lock.json from backend
+COPY backend/package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy rest of the application files
-COPY . .
+# Copy the backend source code
+COPY backend/ ./
 
-# Expose port 8000
+# Expose port 8000 (adjust if your app uses a different port)
 EXPOSE 8000
 
 # Run the app
-CMD ["npm", "start"]
+CMD ["node", "main.js"]

@@ -11,6 +11,9 @@ const symbolToBackend = { "+": "add", "-": "sub", "*": "mul", "/": "div" };
 // History log
 let history = [];
 
+// BASE_URL points to Nginx proxy path
+const BASE_URL = "/calculator";
+
 // Update display
 function updateDisplay() {
   expressionEl.textContent = `${firstNum} ${operator || ""} ${secondNum}`;
@@ -20,7 +23,6 @@ function updateDisplay() {
 // Number & decimal buttons
 document.querySelectorAll(".number").forEach(btn => {
   btn.addEventListener("click", () => {
-    console.log("Number clicked:", btn.textContent);
     if (btn.textContent === "." && current.includes(".")) return;
     current += btn.textContent;
     if (!operator) firstNum = current;
@@ -31,7 +33,6 @@ document.querySelectorAll(".number").forEach(btn => {
 
 // Clear button
 document.querySelector(".clear").addEventListener("click", () => {
-  console.log("Clear clicked");
   firstNum = "";
   secondNum = "";
   operator = "";
@@ -41,7 +42,6 @@ document.querySelector(".clear").addEventListener("click", () => {
 
 // Sign toggle (+/-)
 document.querySelector(".sign").addEventListener("click", () => {
-  console.log("Sign clicked");
   if (!current) return;
   current = current.startsWith("-") ? current.slice(1) : "-" + current;
   if (!operator) firstNum = current;
@@ -53,9 +53,7 @@ document.querySelector(".sign").addEventListener("click", () => {
 document.querySelectorAll(".operator").forEach(btn => {
   btn.addEventListener("click", async () => {
     const op = btn.dataset.op;
-    console.log("Operator clicked:", op);
 
-    // Percentage
     if (op === "%") {
       current = (parseFloat(current) / 100).toString();
       if (!operator) firstNum = current;
@@ -64,9 +62,8 @@ document.querySelectorAll(".operator").forEach(btn => {
       return;
     }
 
-    // Square root
     if (op === "sqrt") {
-      current = (Math.sqrt(parseFloat(current))).toString();
+      current = Math.sqrt(parseFloat(current)).toString();
       if (!operator) firstNum = current;
       else secondNum = current;
       updateDisplay();
@@ -86,7 +83,6 @@ document.querySelectorAll(".operator").forEach(btn => {
 
 // Equal button
 document.querySelector(".equal").addEventListener("click", async () => {
-  console.log("Equal clicked");
   if (!firstNum || !operator || !secondNum) return;
   await calculate();
 });
@@ -104,9 +100,6 @@ async function calculate() {
   }
 
   try {
-    // Use current host for production
-    const BASE_URL = "http://13.201.75.167:8000";
-
     const res = await fetch(`${BASE_URL}/calculate`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

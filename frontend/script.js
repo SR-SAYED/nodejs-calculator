@@ -5,6 +5,7 @@ let current = "";
 const expressionEl = document.getElementById("expression");
 const resultEl = document.getElementById("result");
 
+// Map operator symbols to backend strings
 const symbolToBackend = { "+": "add", "-": "sub", "*": "mul", "/": "div" };
 
 function updateDisplay() {
@@ -12,7 +13,7 @@ function updateDisplay() {
   resultEl.textContent = current || "0";
 }
 
-// Number & decimal
+// Number & decimal buttons
 document.querySelectorAll(".number").forEach(btn => {
   btn.addEventListener("click", () => {
     if (btn.textContent === "." && current.includes(".")) return;
@@ -23,7 +24,7 @@ document.querySelectorAll(".number").forEach(btn => {
   });
 });
 
-// Clear
+// Clear button
 document.querySelector(".clear").addEventListener("click", () => {
   firstNum = "";
   secondNum = "";
@@ -32,7 +33,7 @@ document.querySelector(".clear").addEventListener("click", () => {
   updateDisplay();
 });
 
-// Sign toggle
+// Sign toggle (+/-)
 document.querySelector(".sign").addEventListener("click", () => {
   if (!current) return;
   current = current.startsWith("-") ? current.slice(1) : "-" + current;
@@ -41,11 +42,12 @@ document.querySelector(".sign").addEventListener("click", () => {
   updateDisplay();
 });
 
-// Operators including %, sqrt
+// Operator buttons including %, sqrt
 document.querySelectorAll(".operator").forEach(btn => {
   btn.addEventListener("click", async () => {
     const op = btn.dataset.op;
 
+    // Percentage
     if (op === "%") {
       current = (parseFloat(current) / 100).toString();
       if (!operator) firstNum = current;
@@ -54,6 +56,7 @@ document.querySelectorAll(".operator").forEach(btn => {
       return;
     }
 
+    // Square root
     if (op === "sqrt") {
       current = (Math.sqrt(parseFloat(current))).toString();
       if (!operator) firstNum = current;
@@ -63,7 +66,9 @@ document.querySelectorAll(".operator").forEach(btn => {
     }
 
     if (!current) return;
-    if (operator && secondNum) await calculate(); // chain calculations
+
+    // Chain calculations if previous operator exists
+    if (operator && secondNum) await calculate();
 
     operator = op;
     current = "";
@@ -82,6 +87,12 @@ async function calculate() {
   const num1 = parseFloat(firstNum);
   const num2 = parseFloat(secondNum);
   const backendOp = symbolToBackend[operator];
+
+  if (!backendOp) {
+    current = "Error: Invalid operation";
+    updateDisplay();
+    return;
+  }
 
   try {
     const res = await fetch("/calculate", {

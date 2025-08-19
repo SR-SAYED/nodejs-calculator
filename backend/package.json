@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node main.js"
   },
-  "author": "Your Name",
+  "author": "MD Sayedur Rahman",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2"

@@ -1,20 +1,24 @@
 const express = require("express");
+const cors = require("cors");
 const path = require("path");
 const bodyParser = require("body-parser");
 
 const app = express();
 const PORT = 8000;
 
+// Enable CORS
+app.use(cors());
+
 // Parse JSON
 app.use(bodyParser.json());
 
-// Log every request
+// Logging middleware
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} Body:`, req.body);
   next();
 });
 
-// Serve frontend files
+// Serve frontend
 app.use(express.static(path.join(__dirname, "../frontend")));
 
 // API route
@@ -36,7 +40,7 @@ app.post("/calculate", (req, res) => {
   res.json({ result });
 });
 
-// Listen on all interfaces so production server can access
+// Listen externally
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`✅ Backend running at http://0.0.0.0:${PORT}`);
 });
